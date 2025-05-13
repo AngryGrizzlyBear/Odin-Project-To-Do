@@ -8,16 +8,14 @@ export default class Project {
         this.todos.push(todo);
     }
 
-    removeTodo(index) {
-        this.todos.splice(index, 1);
-    }
-
     getTodos() {
         return this.todos;
     }
+
     getTodo(index) {
-        return this.todo[index];
+        return this.todos[index];
     }
+
     removeTodo(index) {
         if (index >= 0 && index < this.todos.length) {
             this.todos.splice(index, 1);
