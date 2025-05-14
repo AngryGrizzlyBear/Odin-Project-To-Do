@@ -8,6 +8,7 @@ import Todo from './modules/Todo';
 const app = document.getElementById('app') || document.body;
 
 const projectForm = document.createElement('form');
+projectForm.id = 'project-form'
 const projectInput = document.createElement('input');
 const addButton = document.createElement('button');
 projectInput.type = 'text';
@@ -22,6 +23,7 @@ projectForm.appendChild(addButton);
 const projectListContainer = createProjectListContainer();
 const todoListContainer = createTodoListContainer();
 const todoForm = document.createElement('form');
+todoForm.id = 'todo-form';
 const titleInput = document.createElement('input');
 const dueDateInput = document.createElement('input');
 const prioritySelect = document.createElement('select');
@@ -64,6 +66,10 @@ projectForm.addEventListener('submit', (e) => {
     e.preventDefault();
     const name = projectInput.value.trim();
     if (name) {
+        if (manager.getProjectByName(name)) {
+            alert('Project already exists!');
+            return;
+        }  
         manager.addProject(name);
         projectInput.value = '';
         projectInput.focus();
