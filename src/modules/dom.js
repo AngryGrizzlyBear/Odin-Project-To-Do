@@ -30,8 +30,8 @@ function renderProjects(projects, onProjectSelect) {
     container.appendChild(fragment);
 }
 
-function renderTodos(todos) {
-    const container = document.getElementById('todo-list');
+function renderTodos(todos, onDelete) {
+    const container = document.getElementById('todolist');
     if (!container) return;
     container.innerHTML = '';
 
@@ -40,17 +40,55 @@ function renderTodos(todos) {
         return;
     }
 
-    todos.forEach(todo => {
+    todos.forEach((todo, index) => {
         const todoDiv = document.createElement('div');
         todoDiv.classList.add('todo-item');
-        todoDiv.innerHTML = `
-        <h3>${todo.title}</h3>
-        <p> Due: ${todo.dueDate}</p>
-        <p>Priority: ${todo.priority}</p>
-        `;
+
+        const title = document.createElement('h3');
+        title.textContent = todo.title;
+
+        const due = document.createElement('p');
+        due.textContent = `Due: ${todo.dueDate}`;
+
+        const priority = document.createElement('p');
+        priority.textContent = `Priority: ${todo.priority}`;
+
+        const deleteBtn = document.createElement('button');
+        deleteBtn.textContent = 'Delete';
+        deleteBtn.addEventListener('click', () => {
+            if (typeof onDelete === 'function') onDelete(index);
+        });
+
+        todoDiv.appendChild(title);
+        todoDiv.appendChild(due);
+        todoDiv.appendChild(priority);
+        todoDiv.appendChild(deleteBtn);
+
         container.appendChild(todoDiv);
     });
 }
+
+// function renderTodos(todos) {
+//     const container = document.getElementById('todo-list');
+//     if (!container) return;
+//     container.innerHTML = '';
+
+//     if (todos.length === 0) {
+//         container.textContent = 'No todos in this project';
+//         return;
+//     }
+
+//     todos.forEach(todo => {
+//         const todoDiv = document.createElement('div');
+//         todoDiv.classList.add('todo-item');
+//         todoDiv.innerHTML = `
+//         <h3>${todo.title}</h3>
+//         <p> Due: ${todo.dueDate}</p>
+//         <p>Priority: ${todo.priority}</p>
+//         `;
+//         container.appendChild(todoDiv);
+//     });
+// }
 
 export {
     createProjectListContainer,

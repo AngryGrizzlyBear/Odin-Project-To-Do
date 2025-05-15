@@ -2,6 +2,7 @@ import { createProjectListContainer, createTodoListContainer, renderProjects, re
 import ProjectManager from "./modules/ProjectManager";
 import Todo from './modules/Todo';
 
+
 // console.log(ProjectManager); // It should log a function (the class), not `undefined` or an object
 
 
@@ -58,7 +59,11 @@ let activeProject = manager.getProjects()[0];
 function handleProjectSelect(projectName) {
     activeProject = manager.getProjectByName(projectName);
     if (activeProject) {
-        renderTodos(activeProject.getTodos());
+        renderTodos(activeProject.getTodos(), (index) => {
+            activeProject.deleteTodo(index);
+            manager.saveProjects();
+            renderTodos(activeProject.getTodos(), arguments.callee);
+        });        
     }
 }
 
@@ -76,7 +81,11 @@ projectForm.addEventListener('submit', (e) => {
 
         activeProject = manager.getProjectByName(name);
         renderProjects(manager.getProjects(), handleProjectSelect);
-        renderTodos(activeProject.getTodos());
+        renderTodos(activeProject.getTodos(), (index) => {
+            activeProject.deleteTodo(index);
+            manager.saveProjects();
+            renderTodos(activeProject.getTodos(), arguments.callee);
+        });        
     }
 });
 
@@ -103,5 +112,10 @@ todoForm.addEventListener('submit', (e) => {
 });
 
 renderProjects(manager.getProjects(), handleProjectSelect);
-if (activeProject) renderTodos(activeProject.getTodos());
+if (activeProject) renderTodos(activeProject.getTodos(), (index) => {
+    activeProject.deleteTodo(index);
+    manager.saveProjects();
+    renderTodos(activeProject.getTodos(), arguments.callee);
+});
+
 

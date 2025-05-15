@@ -21,4 +21,8 @@ export default class Project {
             this.todos.splice(index, 1);
         }
     }
+
+    deleteTodo(index) {
+        this.todos.splice(index, 1);
+    }
 }
