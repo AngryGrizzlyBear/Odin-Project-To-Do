@@ -1,4 +1,5 @@
 import Project from './Project.js';
+import Todo from './Todo.js'
 
 export default class ProjectManager {
     constructor() {
@@ -31,8 +32,15 @@ export default class ProjectManager {
             this.projects = parsed.map(p => {
                 const project = new Project(p.name);
                 // Manually copy todos (which are plain objects)
-                project.todos = p.todos || [];
-                return project;
+                project.todos = (p.todos || []).map(t => new Todo (
+                    t.title,
+                    t.description,
+                    t.dueDate,
+                    t.priority,
+                    t.notes,
+                    t.checklist
+                ));
+                return project
             });
         }
     }

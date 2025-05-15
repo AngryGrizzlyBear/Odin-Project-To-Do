@@ -10,7 +10,7 @@ function createTodoListContainer() {
     return container;
 }
 
-function renderProjects(projects, onProjectSelect) {
+function renderProjects(projects, onProjectSelect, onProjectDelete) {
     const container = document.getElementById('project-list');
     if (!container) return;
     container.innerHTML = '';
@@ -21,17 +21,28 @@ function renderProjects(projects, onProjectSelect) {
     }
 
     const fragment = document.createDocumentFragment();
-    projects.forEach(project => {
-        const btn = document.createElement('button');
-        btn.textContent = project.name;
-        btn.addEventListener('click', () => onProjectSelect(project.name));
-        fragment.appendChild(btn);
+    projects.forEach((project, index) => {
+      const projectDiv = document.createElement('div');
+  
+      const btn = document.createElement('button');
+      btn.textContent = project.name;
+      btn.addEventListener('click', () => onProjectSelect(project.name));
+  
+      const deleteBtn = document.createElement('button');
+      deleteBtn.textContent = 'Delete';
+      deleteBtn.addEventListener('click', () => {
+        if (typeof onProjectDelete === 'function') onProjectDelete(project.name);
+      });
+  
+      projectDiv.appendChild(btn);
+      projectDiv.appendChild(deleteBtn);
+      fragment.appendChild(projectDiv);
     });
     container.appendChild(fragment);
-}
+  }
 
 function renderTodos(todos, onDelete) {
-    const container = document.getElementById('todolist');
+    const container = document.getElementById('todo-list');
     if (!container) return;
     container.innerHTML = '';
 
@@ -67,28 +78,6 @@ function renderTodos(todos, onDelete) {
         container.appendChild(todoDiv);
     });
 }
-
-// function renderTodos(todos) {
-//     const container = document.getElementById('todo-list');
-//     if (!container) return;
-//     container.innerHTML = '';
-
-//     if (todos.length === 0) {
-//         container.textContent = 'No todos in this project';
-//         return;
-//     }
-
-//     todos.forEach(todo => {
-//         const todoDiv = document.createElement('div');
-//         todoDiv.classList.add('todo-item');
-//         todoDiv.innerHTML = `
-//         <h3>${todo.title}</h3>
-//         <p> Due: ${todo.dueDate}</p>
-//         <p>Priority: ${todo.priority}</p>
-//         `;
-//         container.appendChild(todoDiv);
-//     });
-// }
 
 export {
     createProjectListContainer,
