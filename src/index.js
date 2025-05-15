@@ -61,24 +61,34 @@ import {
   
   // ----- App Logic -----
   const manager = new ProjectManager();
-  if (manager.getProjects().length === 0) {
-    manager.addProject("Default");
-    manager.saveProjects();
-  }
   let activeProject = manager.getProjects()[0];
+  
+  // ✅ NEW: Helper function to enable/disable the todo form
+  function setTodoFormEnabled(enabled) {
+    [titleInput, dueDateInput, prioritySelect, addTodoButton].forEach(el => {
+      el.disabled = !enabled;
+    });
+  }
+  
+  // ✅ Initially disable if no project exists
+  setTodoFormEnabled(!!activeProject);
   
   function renderActiveTodos() {
     const container = document.getElementById('todo-list');
+  
     if (!activeProject) {
+      setTodoFormEnabled(false);
       container.innerHTML = 'Select or create a project to view its todos.';
       return;
     }
+  
+    setTodoFormEnabled(true);
   
     renderTodos(activeProject.getTodos(), index => {
       activeProject.deleteTodo(index);
       manager.saveProjects();
   
-      // Check again if project still exists after deletion
+      // ✅ If current project still exists, re-render, otherwise clear it
       if (manager.getProjectByName(activeProject.name)) {
         renderActiveTodos();
       } else {
@@ -92,12 +102,11 @@ import {
     activeProject = manager.getProjectByName(projectName);
     renderActiveTodos();
   }
-
+  
   function handleProjectDelete(projectName) {
     manager.projects = manager.projects.filter(p => p.name !== projectName);
     manager.saveProjects();
   
-    // Reset activeProject if it's the one being deleted
     if (activeProject && activeProject.name === projectName) {
       activeProject = manager.getProjects()[0] || null;
     }
@@ -123,7 +132,6 @@ import {
   
     activeProject = manager.getProjectByName(name);
     renderProjects(manager.getProjects(), handleProjectSelect, handleProjectDelete);
-    
     renderActiveTodos();
   });
   
@@ -132,7 +140,6 @@ import {
     console.log('Submit event fired');
   
     if (!activeProject) {
-      alert("Please create and select a project before adding a ToDo.");
       console.log("No active project selected");
       return;
     }
@@ -140,6 +147,8 @@ import {
     const title = titleInput.value.trim();
     const dueDate = dueDateInput.value;
     const priority = prioritySelect.value;
+  
+    console.log("Inputs:", { title, dueDate, priority });
   
     if (!title || !dueDate) {
       console.log("Missing title or dueDate");
@@ -159,16 +168,7 @@ import {
     console.log("Todos re-rendered");
   });
   
-  
   // ----- Initial Render -----
   renderProjects(manager.getProjects(), handleProjectSelect, handleProjectDelete);
-  
-  if (!activeProject && manager.getProjects().length > 0) {
-    const firstProject = manager.getProjects()[0];
-    console.log("Setting active project to:", firstProject.name);
-    handleProjectSelect(firstProject.name);
-  } else {
-    console.log("No projects found or already have active project");
-    renderActiveTodos();
-  }
+  renderActiveTodos();
   
