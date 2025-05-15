@@ -43,7 +43,12 @@ function renderProjects(projects, onProjectSelect, onProjectDelete) {
 
 function renderTodos(todos, onDelete) {
     const container = document.getElementById('todo-list');
-    if (!container) return;
+    if (!container) {
+        console.warn('Todo list container not found');
+        return;
+    }
+    console.log('Rendering todos:', todos); // ← Add this
+
     container.innerHTML = '';
 
     if (todos.length === 0) {
