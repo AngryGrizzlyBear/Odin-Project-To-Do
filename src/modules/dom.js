@@ -63,6 +63,10 @@ function renderTodos(todos, onDelete) {
         const title = document.createElement('h3');
         title.textContent = todo.title;
 
+        const desc = document.createElement('p');
+        desc.textContent = `description: ${todo.description}`
+        todoDiv.appendChild(desc);
+
         const due = document.createElement('p');
         due.textContent = `Due: ${todo.dueDate}`;
 
