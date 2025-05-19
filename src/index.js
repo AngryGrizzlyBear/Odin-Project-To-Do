@@ -60,8 +60,16 @@ addTodoButton.textContent = 'Add Todo';
 const projectListContainer = createProjectListContainer();
 const todoListContainer = createTodoListContainer();
 
+const projectHeading = document.createElement('h2');
+projectHeading.textContent = 'Projects';
+
+const todoHeading = document.createElement('h2');
+todoHeading.textContent = 'ToDos';
+
+app.appendChild(projectHeading);
 app.appendChild(projectForm);
 app.appendChild(projectListContainer);
+app.appendChild(todoHeading);
 app.appendChild(todoForm);
 app.appendChild(todoListContainer);
 
