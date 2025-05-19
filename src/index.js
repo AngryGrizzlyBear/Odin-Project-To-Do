@@ -6,6 +6,7 @@ import {
 } from "./modules/dom";
 import ProjectManager from "./modules/ProjectManager";
 import Todo from './modules/Todo';
+import './styles/style.css';
 
 // ----- DOM Setup -----
 const app = document.getElementById('app') || document.body;
