@@ -65,7 +65,7 @@ function renderTodos(todos, onDelete) {
 
         const desc = document.createElement('p');
         desc.textContent = `description: ${todo.description}`
-        todoDiv.appendChild(desc);
+      
 
         const due = document.createElement('p');
         due.textContent = `Due: ${todo.dueDate}`;
@@ -80,10 +80,10 @@ function renderTodos(todos, onDelete) {
         });
 
         todoDiv.appendChild(title);
+          todoDiv.appendChild(desc);
         todoDiv.appendChild(due);
         todoDiv.appendChild(priority);
         todoDiv.appendChild(deleteBtn);
-
         container.appendChild(todoDiv);
     });
 }
